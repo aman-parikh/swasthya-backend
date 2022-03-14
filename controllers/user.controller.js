@@ -39,7 +39,7 @@ const editUserById = errorHandler(async (req, res) => {
 
 const getOneUser = errorHandler(async (req, res) => {
   if (req.query) {
-    let filter = pick(req.query, ["email", "userId"])
+    let filter = pick(req.query, ["email", "userId", "firebaseUid"])
     let user = null
     if (filter["userId"]) {
       user = await userService.getUserById(filter["userId"])
@@ -61,9 +61,20 @@ const getOneUser = errorHandler(async (req, res) => {
       }
       throw new Error("Bad Request: Fill in the details properly", 400, null)
     }
+    else if (filter["firebaseUid"]) {
+      user = await userService.getUserByFirebase(filter["firebaseUid"])
+      if (user && user["error"]) {
+        throw new Error(user["error"], 500, null)
+      }
+      else if (user) {
+        return res.status(200).json({ result: user })
+      }
+      throw new Error("Bad Request: Fill in the details properly", 400, null)
+
+    }
     throw new Error("An unkown error occurred", 500, null)
   }
-  throw new Error("Bad Request: Fill in the details properly",400, null)
+  throw new Error("Bad Request: Fill in the details properly", 400, null)
 })
 
 module.exports = {

@@ -10,6 +10,16 @@ const getUserByEmail = async (email) => {
   }
 }
 
+const getUserByFirebase = async (uid) => {
+  try {
+    return await User.findOne({ firebaseUid: uid })
+  }
+  catch (err) {
+    console.error(err)
+    return { "error": err }
+  }
+}
+
 const createUser = async (userBody) => {
   try {
     return await User.create(userBody)
@@ -52,5 +62,5 @@ const editUserById = async (userId, userBody) => {
 }
 
 module.exports = {
-  createUser, editUserById, getUsers, getUserById, getUserByEmail
+  createUser, editUserById, getUsers, getUserById, getUserByEmail, getUserByFirebase
 }
