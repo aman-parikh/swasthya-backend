@@ -1,7 +1,7 @@
 const userService = require('../services/user.service')
 const { errorHandler } = require('../utils/error-handler')
 const Error = require('../utils/error')
-const { pick } = require('../utils/pick')
+const pick = require('../utils/pick')
 const { checkString } = require('../utils/checks')
 
 const createUser = errorHandler(async (req, res) => {
