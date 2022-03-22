@@ -4,6 +4,20 @@ const Error = require('../utils/error')
 const pick = require('../utils/pick')
 const { checkString } = require('../utils/checks')
 
+const checkUserPresent = errorHandler(async (req, res) => {
+  if(req.query){
+    const user = await userService.getUserByFirebase(req.query.firebaseUid)
+    
+    if(user === null){
+      return res.status(200).json({present : false})
+    }
+    else{
+      return res.status(200).json({present : true})
+    }
+
+  }
+})
+
 const createUser = errorHandler(async (req, res) => {
   if (req.body && req.body.email && req.body.name) {
     req.body["isActive"] = true
@@ -78,5 +92,5 @@ const getOneUser = errorHandler(async (req, res) => {
 })
 
 module.exports = {
-  createUser, editUserById, getOneUser
+  createUser, editUserById, getOneUser, checkUserPresent
 }
