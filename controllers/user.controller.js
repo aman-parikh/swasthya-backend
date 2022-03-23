@@ -5,18 +5,52 @@ const pick = require('../utils/pick')
 const { checkString } = require('../utils/checks')
 
 const checkUserPresent = errorHandler(async (req, res) => {
-  if(req.query){
-    const user = await userService.getUserByFirebase(req.query.firebaseUid)
+  console.log(req.body)
+  if(req.body){
+    const fid = req.body.params.firebaseUid;
+    const user = await userService.getUserByFirebase(fid)
     
     if(user === null){
+      console.log("user is null")
       return res.status(200).json({present : false})
     }
     else{
+      //store user session cookie 
+
+      req.session.user = user;
       return res.status(200).json({present : true})
     }
 
   }
 })
+
+const checkLoggedIn = errorHandler(async (req, res) => {
+  if(req.session.user){
+      return res.status(200).json({loggedIn : true,user : req.session.user})
+    }
+    else{
+      //store user id session cookie 
+      return res.status(200).json({loggedIn : false,user : null})
+    }
+
+  })
+
+  const logOut = errorHandler(async (req, res) => {
+    
+      req.session.destroy((err)=>{
+        if(err)
+        {
+          console.log(err);
+          return res.status(200).json({status : false})
+        }
+        else{
+          return res.status(200).json({status : true})
+        }
+        
+      });
+  
+    })
+
 
 const createUser = errorHandler(async (req, res) => {
   if (req.body && req.body.email && req.body.name) {
@@ -92,5 +126,5 @@ const getOneUser = errorHandler(async (req, res) => {
 })
 
 module.exports = {
-  createUser, editUserById, getOneUser, checkUserPresent
+  createUser, editUserById, getOneUser, checkUserPresent,checkLoggedIn,logOut
 }
