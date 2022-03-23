@@ -5,7 +5,6 @@ const pick = require('../utils/pick')
 const { checkString } = require('../utils/checks')
 
 const checkUserPresent = errorHandler(async (req, res) => {
-  console.log(req.body)
   if(req.body){
     const fid = req.body.params.firebaseUid;
     const user = await userService.getUserByFirebase(fid)

@@ -57,6 +57,7 @@ const userRouter = require('./routes/user.route')
 app.use('/user', userRouter)
 
 //coach
+app.use('/coach', require('./routes/coach.route'))
 
 
 //class

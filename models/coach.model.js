@@ -5,6 +5,7 @@ const coachSchema = new mongoose.Schema({
   email: { type: String, required: true },
   phoneNumber1: { type: String },
   firebaseUid: { type: String },
+  dob:String,//YYYY-MM-DD
   age: Number,
   gender: { type: String },
   category: [String],

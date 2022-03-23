@@ -1,4 +1,4 @@
-const Coach = require('../models/class.model')
+const Coach = require('../models/coach.model')
 
 const create = async (body) => {
   try {

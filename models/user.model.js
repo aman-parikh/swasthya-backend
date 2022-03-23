@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   phoneNumber1: { type: String },
   firebaseUid: { type: String},
   age: Number,
+  dob: String,////YYYY-MM-DD
   gender: { type: String },
   heightInCm: Number,
   weightInKg: Number,
