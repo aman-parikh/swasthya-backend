@@ -24,31 +24,35 @@ const checkUserPresent = errorHandler(async (req, res) => {
 })
 
 const checkLoggedIn = errorHandler(async (req, res) => {
-  if(req.session.user){
-      return res.status(200).json({loggedIn : true,user : req.session.user})
-    }
-    else{
-      //store user id session cookie 
-      return res.status(200).json({loggedIn : false,user : null})
-    }
+  try{
+    if(req.session.user){
+        return res.status(200).json({loggedIn : true,user : req.session.user})
+      }
+      else{
+        //store user id session cookie 
+        return res.status(200).json({loggedIn : false,user : null})
+      }
+  }
+  catch(err) {
+    return res.status(400).json({error : err})
+  }
 
-  })
+})
 
-  const logOut = errorHandler(async (req, res) => {
+const logOut = errorHandler(async (req, res) => {
     
-      req.session.destroy((err)=>{
-        if(err)
-        {
-          console.log(err);
-          return res.status(200).json({status : false})
-        }
-        else{
-          return res.status(200).json({status : true})
-        }
+    req.session.destroy((err)=>{
+      if(err)
+      {
+        console.log(err);
+        return res.status(200).json({status : false})
+      }
+      else{
+        return res.status(200).json({status : true})
+      }
         
-      });
-  
-    })
+    });
+})
 
 
 const createUser = errorHandler(async (req, res) => {

@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 require('dotenv').config();
 require('./config/database')
-let portNumber = process.env.PORT || 3600
+let portNumber = process.env.PORT
 
 // enable this if you run behind a proxy (e.g. nginx)
 app.set('trust proxy', 1);
