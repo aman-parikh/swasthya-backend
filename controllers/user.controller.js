@@ -26,7 +26,10 @@ const checkUserPresent = errorHandler(async (req, res) => {
 const checkLoggedIn = errorHandler(async (req, res) => {
   try{
     if(req.session.user){
-        return res.status(200).json({loggedIn : true,user : req.session.user})
+
+        const updated = await userService.getUserById(req.session.user._id)
+
+        return res.status(200).json({loggedIn : true,user : updated})
       }
       else{
         //store user id session cookie 
