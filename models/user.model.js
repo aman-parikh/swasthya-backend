@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
   hasAsthma: { type: Boolean },
   isActive: { type: Boolean},
   numberOfClasses: { type: Number, default: 0 },
+  isFirstTime : {type: Boolean, default : true}
 }, { timestamps: true })
 
 const User = mongoose.model('user', userSchema)
