@@ -126,7 +126,7 @@ const getOneUser = errorHandler(async (req, res) => {
       throw new Error("Bad Request: Fill in the details properly", 400, null)
 
     }
-    throw new Error("An unkown error occurred", 500, null)
+    else throw new Error("Bad Request: Fill in the details properly", 400, null)
   }
   throw new Error("Bad Request: Fill in the details properly", 400, null)
 })
