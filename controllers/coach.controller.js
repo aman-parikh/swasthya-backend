@@ -4,6 +4,22 @@ const { errorHandler } = require('../utils/error-handler')
 const Error = require('../utils/error')
 const { checkString } = require('../utils/checks')
 
+const checkCoachPresent = errorHandler(async (req, res) => {
+  if(req.body){
+    const fid = req.body.params.firebaseUid;
+    const coach = await coachService.getByFirebase(fid)
+    
+    if(coach === null){
+      console.log("coach is null")
+      return res.status(200).json({present : false})
+    }
+    else{
+      return res.status(200).json({coach: coach ,present : true})
+    }
+
+  }
+})
+
 const createCoach = errorHandler(async (req, res) => {
   if (req.body && req.body.email && req.body.firebaseUid && req.body.name) {
     let coach = await coachService.create(req.body)
@@ -70,4 +86,4 @@ const getCoachById = errorHandler(async (req, res) => {
   else throw new Error("Bad Request: Fill in the details properly", 400, null)
 })
 
-module.exports = { getCoachById, editCoachById, createCoach, queryCoaches }
+module.exports = { getCoachById, editCoachById, createCoach, queryCoaches, checkCoachPresent }
