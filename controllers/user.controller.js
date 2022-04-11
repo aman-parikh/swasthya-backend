@@ -14,10 +14,7 @@ const checkUserPresent = errorHandler(async (req, res) => {
       return res.status(200).json({present : false})
     }
     else{
-      //store user session cookie 
-
-      req.session.user = user;
-      return res.status(200).json({present : true})
+      return res.status(200).json({user:user, present : true})
     }
 
   }
