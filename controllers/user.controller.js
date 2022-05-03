@@ -20,40 +20,6 @@ const checkUserPresent = errorHandler(async (req, res) => {
   }
 })
 
-const checkLoggedIn = errorHandler(async (req, res) => {
-  try{
-    if(req.session.user){
-
-        const updated = await userService.getUserById(req.session.user._id)
-
-        return res.status(200).json({loggedIn : true,user : updated})
-      }
-      else{
-        //store user id session cookie 
-        return res.status(200).json({loggedIn : false,user : null})
-      }
-  }
-  catch(err) {
-    return res.status(400).json({error : err})
-  }
-
-})
-
-const logOut = errorHandler(async (req, res) => {
-    
-    req.session.destroy((err)=>{
-      if(err)
-      {
-        console.log(err);
-        return res.status(200).json({status : false})
-      }
-      else{
-        return res.status(200).json({status : true})
-      }
-        
-    });
-})
-
 
 const createUser = errorHandler(async (req, res) => {
   if (req.body && req.body.email && req.body.name) {
@@ -129,5 +95,5 @@ const getOneUser = errorHandler(async (req, res) => {
 })
 
 module.exports = {
-  createUser, editUserById, getOneUser, checkUserPresent,checkLoggedIn,logOut
+  createUser, editUserById, getOneUser, checkUserPresent
 }

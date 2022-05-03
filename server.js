@@ -1,9 +1,6 @@
 const express = require('express');
 const cors = require('cors')
 const app = express();
-const session = require('express-session');
-const redis = require('redis');
-const connectRedis = require('connect-redis');
 
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
@@ -14,34 +11,11 @@ let portNumber = process.env.PORT
 // enable this if you run behind a proxy (e.g. nginx)
 app.set('trust proxy', 1);
 
-const RedisStore = connectRedis(session)
-
-const redisClient = redis.createClient({legacyMode: true})
-redisClient.connect().catch(console.error)
-
 const corsOptions = {
-  origin: 'http://localhost:3000',  //Your Client, do not write '*'
-  credentials: true,
+  origin: '*'
 };
 
 app.use(cors(corsOptions));
-//session
-app.use(
-  session({
-  name : "uid",
-  credentials: true,
-  store: new RedisStore({ client: redisClient, 
-      disableTouch: true}),
-  cookie : {
-      httpOnly:false,
-      sameSite:'lax', //csrf
-      secure: false,
-  },
-  saveUninitialized : false,
-  secret: "keyboard cat",
-  resave: false,
-  })
-)
 
 //health api to check if server is running
 app.get('/health', (req, res) => {
