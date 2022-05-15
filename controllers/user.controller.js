@@ -20,7 +20,6 @@ const checkUserPresent = errorHandler(async (req, res) => {
   }
 })
 
-
 const createUser = errorHandler(async (req, res) => {
   if (req.body && req.body.email && req.body.name) {
     req.body["isActive"] = true

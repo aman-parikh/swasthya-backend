@@ -33,15 +33,13 @@ app.use('/user', userRouter)
 //coach
 app.use('/coach', require('./routes/coach.route'))
 
-
 //class
-
+app.use('/class', require('./routes/class.route'))
 
 //payments
 
 
 //nutrition
-
 
 
 app.listen(portNumber, () => {
