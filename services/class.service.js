@@ -54,4 +54,4 @@ const queryClasses = async (filter, options) => {
   }
 }
 
-module.exports = { createClass, editClass, queryClasses, getClass }
+module.exports = { createClass, editClass, queryClasses, getClass, deleteClass }

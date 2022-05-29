@@ -26,12 +26,20 @@ const createClass = errorHandler(async (req, res) => {
       throw new Error(newClass["error"], 500, null)
     }
     else if (newClass) {
-      for (tuple in req.body.plan) {
-        let addedClass = await coachService.addAClassInSchedule(coachId, newClass["_id"], tuple[0], tuple[1])
-        if (addedClass && addedClass["error"]) {
-          let deletedClass = await classService.deleteClass(newClass["_id"])
-          throw new Error(addedClass["error"], 500, null)
-        }
+      const coachId = req.body.coachId
+
+      const overlap = await coachService.checkAvailability(coachId, req.body.plan)
+
+      if (overlap) {
+        await classService.deleteClass(newClass["_id"])
+        throw new Error('Class already exists on at least one of the chosen days', 500, null)
+      }
+      else if (overlap && overlap["error"]) {
+        throw new Error(overlap["error"], 500, null)
+      }
+
+      for (const tuple of req.body.plan) {
+        await coachService.addAClassInSchedule(coachId, newClass["_id"], tuple[0], tuple[1])
       }
       return res.status(200).json({ result: newClass })
     }
@@ -87,6 +95,6 @@ const queryClasses = errorHandler(async (req, res) => {
   return res.json({ result: [] })
 })
 
-module.exports = { 
+module.exports = {
   createClass, editClass, deleteClass, queryClasses, getClass
 }

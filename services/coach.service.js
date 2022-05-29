@@ -30,12 +30,28 @@ const editById = async (id, body) => {
   }
 }
 
+const checkAvailability = async (coachId, plan) => {
+  try {
+    const coachData = await getById(coachId)
+    let { weeklySchedule } = coachData
+
+    for (const tuple of plan) {
+      if (weeklySchedule[tuple[0]][tuple[1]]) return true;
+    }
+
+    return false;
+  }
+  catch (e) {
+    console.log(e)
+    return { "error": e }
+  }
+}
+
 const addAClassInSchedule = async (coachId, classId, day, index) => {
   try {
-    let coachData = await Coach.getById(coachId)
+    let coachData = await getById(coachId)
     let { weeklySchedule } = coachData
-    if(weeklySchedule[day][index])
-      return {"error":"Class already exists"}
+    if (weeklySchedule[day][index]) return { "error": "Class already exists" }
     weeklySchedule[day][index] = classId
     coachData[weeklySchedule] = weeklySchedule
     Object.assign(coachData.weeklySchedule[day], coachData.weeklySchedule[day][index])
@@ -50,7 +66,7 @@ const addAClassInSchedule = async (coachId, classId, day, index) => {
 
 const removeAClassFromSchedule = async (coachId, day, index) => {
   try {
-    let coachData = await Coach.getById(coachId)
+    let coachData = await getById(coachId)
     let { weeklySchedule } = coachData
     weeklySchedule[day][index] = null
     coachData[weeklySchedule] = weeklySchedule
@@ -94,4 +110,4 @@ const getByFirebase = async (id) => {
   }
 }
 
-module.exports = { create, editById, getById, query, getByFirebase, addAClassInSchedule, removeAClassFromSchedule }
+module.exports = { create, editById, getById, query, getByFirebase, addAClassInSchedule, removeAClassFromSchedule, checkAvailability }
